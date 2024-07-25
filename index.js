@@ -31,14 +31,74 @@ async function run() {
     const productsCollection = client.db("virtualVault").collection("products");
 
 
-    app.get('/allFeaturedProducts', async(req, res)=>{
-        const query = {
-            featured: "yes"
-        }
-        const result = await productsCollection.find(query).toArray();
+    //get all featured products
+    app.get('/allFeaturedProducts', async (req, res) => {
+      const query = {
+        featured: "yes"
+      }
+      const result = await productsCollection.find(query).limit(8).toArray();
 
-        res.send(result);
+      res.send(result);
+    });
+
+
+    //get featured products for men
+    app.get('/menFeaturedProducts', async (req, res) => {
+      const query = {
+        featured: "yes",
+        category: 'men'
+      }
+      const result = await productsCollection.find(query).limit(4).toArray();
+
+      res.send(result);
     })
+    
+    
+    //get featured products for women
+    app.get('/womenFeaturedProducts', async (req, res) => {
+      const query = {
+        featured: "yes",
+        category: 'women'
+      }
+      const result = await productsCollection.find(query).limit(4).toArray();
+
+      res.send(result);
+    });
+
+
+    //get featured products for children
+    app.get('/childrenFeaturedProducts', async (req, res) => {
+      const query = {
+        featured: "yes",
+        category: 'children'
+      }
+      const result = await productsCollection.find(query).limit(4).toArray();
+
+      res.send(result);
+    })
+    
+    
+    //get featured products for electronics
+    app.get('/electronicsFeaturedProducts', async (req, res) => {
+      const query = {
+        featured: "yes",
+        category: 'electronics'
+      }
+      const result = await productsCollection.find(query).limit(4).toArray();
+
+      res.send(result);
+    })
+
+
+     //get the new product to show in launch countdown
+     app.get('/upcomingProduct', async (req, res) => {
+      const query = {
+        productName: 'microsoft surface pro'
+      }
+      const result = await productsCollection.findOne(query);
+
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -53,10 +113,10 @@ run().catch(console.dir);
 
 
 //start server
-app.get('/', (req, res)=>{
-    res.send("Virtual Vault server is Running");
+app.get('/', (req, res) => {
+  res.send("Virtual Vault server is Running");
 })
 
-app.listen(port, ()=>{
-    console.log(`Virtual vault server is running at port no ${port}`);
+app.listen(port, () => {
+  console.log(`Virtual vault server is running at port no ${port}`);
 })
